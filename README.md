@@ -8,7 +8,8 @@ Ziele:
 Beispielkarte: https://datawrapper.dwcdn.net/wKC5x/6/
 
 Mögliche Erweiterungen:
+- Ereiterung der Texte um Spezialitäten/Auszeichnungen, wenn alle Daten vorliegen
 - Kantonale Abstimmungen ebenfalls einfliessen lassen
-- Darstellung der Resultate auf Kantonseben
+- Darstellung der Resultate auf Kantonsebene mit regionalen Karten
 
 Beispielkarte: https://datawrapper.dwcdn.net/Xk0aM/2/
