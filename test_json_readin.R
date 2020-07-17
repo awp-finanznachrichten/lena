@@ -1,6 +1,5 @@
 library(rjson)
 library(jsonlite)
-library(jsonlite)
 library(dplyr)
 library(tidyr)
 library(readr)
@@ -148,7 +147,7 @@ colnames(results) <- c("ID","Ja_Anteil","Gemeinde")
 
 for (i in 1:nrow(results)) {
  
-  if (results$ID[i] < 200) {
+  if (results$ID[i] > 6700) {
     
     results$Ja_Anteil[i] <- NA
   
