@@ -1,14 +1,33 @@
-library(rjson)
-library(jsonlite)
-library(dplyr)
-library(tidyr)
-library(readr)
-library(purrr)
-setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
+#Meta-Infos zu Vorlagen aus JSON rauslesen
 
-#json_data <- fromJSON("sd-t-17-02-20140518-eidgAbstimmung.json", flatten = TRUE)
-json_data <- fromJSON("https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200209-eidgAbstimmung.json", flatten = TRUE)
+get_vorlagen <- function(dta_raw, sprache="de") {
+  
+  vorlagen_data <- dta_raw$schweiz$vorlagen$vorlagenTitel
+  print(paste0("Es wurden folgende ",length(vorlagen_data)," Abstimmungsvorlagen gefunden:"))
+  
+  vorlagen <- as.data.frame(vorlagen_data[[1]]) %>%
+    filter(langKey ==  sprache) %>%
+    mutate(nummer = 1)
+  
+  for (i in 2:length(vorlagen_data)) {
+    
+    vorlagen_new <- as.data.frame(vorlagen_data[[i]]) %>%
+      filter(langKey == sprache) %>%
+      mutate(nummer = i)
+    
+    
+    vorlagen <- rbind(vorlagen,vorlagen_new)
+    
+  }  
+  
+  print(vorlagen$text)
+  
+  return(vorlagen)
+  
+}
 
+
+#Resultate aus JSON-File lesen
 get_results <- function(dta_raw,
                         object_nr = 1,
                         level = "communal",
@@ -54,7 +73,7 @@ get_results <- function(dta_raw,
       out <- format_data_g(out)
     }
     if(add_ct_nr) {
-      out <- out %>% left_join(read_csv("Data/MASTERFILE_GDE.csv"), by = c("Gemeinde_Nr"="Gemeinde_Nr"))
+      out <- out %>% left_join(meta_gmd_kt, by = c("Gemeinde_Nr"="Gemeinde_Nr"))
     }
   }
   names(out) <- gsub("resultat.", "", names(out))
@@ -65,6 +84,31 @@ get_results <- function(dta_raw,
   # }
   return(out)
 }
+
+#Gemeindedaten formatieren
+format_data_g <- function(results) {
+  out <- results %>%
+    select(Gemeinde_Nr,
+           Ja_Stimmen_In_Prozent = jaStimmenInProzent,
+           Ja_Stimmen_Absolut = jaStimmenAbsolut,
+           Nein_Stimmen_Absolut = neinStimmenAbsolut,
+           Stimmbeteiligung_In_Prozent = stimmbeteiligungInProzent,
+           Eingelegte_Stimmzettel = eingelegteStimmzettel,
+           Anzahl_Stimmberechtigte = anzahlStimmberechtigte,
+           Gueltige_Stimmen = gueltigeStimmen,
+           Gebiet_Ausgezaehlt = gebietAusgezaehlt,
+           Kanton_Short,
+           Gemeinde_d,
+           Gemeinde_f,
+           Gemeinde_KT_d,
+           Gemeinde_KT_f,
+           Kanton_d,
+           Kanton_f,
+           Kantons_Nr)
+  return(out)
+}
+
+
 
 
 # Gemeindedaten säubern: Auslandschweizer aussortieren, Zürich/Winti zusammenfassen
@@ -122,37 +166,17 @@ treat_gemeinden <- function(res_comm) {
   out <- bind_rows(out, winti)
 }
 
-format_data_g <- function(results) {
-  out <- results %>%
-    select(Gemeinde_Nr,
-           Ja_Stimmen_In_Prozent = jaStimmenInProzent,
-           Ja_Stimmen_Absolut = jaStimmenAbsolut,
-           Nein_Stimmen_Absolut = neinStimmenAbsolut,
-           Stimmbeteiligung_In_Prozent = stimmbeteiligungInProzent,
-           Eingelegte_Stimmzettel = eingelegteStimmzettel,
-           Anzahl_Stimmberechtigte = anzahlStimmberechtigte,
-           Gueltige_Stimmen = gueltigeStimmen,
-           Gebiet_Ausgezaehlt = gebietAusgezaehlt)
-  return(out)
+augment_raw_data <- function(dta_raw) {
+
+  dta <- dta_raw %>%
+    mutate(Ja_Nein = ifelse(Ja_Stimmen_Absolut > Nein_Stimmen_Absolut, "Ja", "Nein")) %>%
+    mutate(Oui_Non = ifelse(Ja_Stimmen_Absolut > Nein_Stimmen_Absolut, "oui", "non")) %>%
+    mutate(Nein_Stimmen_In_Prozent = 100 - Ja_Stimmen_In_Prozent) %>%
+    mutate(Unentschieden = ifelse(Ja_Stimmen_Absolut == Nein_Stimmen_Absolut, TRUE, FALSE)) %>%
+    mutate(Einstimmig_Ja = ifelse(Ja_Stimmen_In_Prozent == 100, TRUE, FALSE)) %>%
+    mutate(Einstimmig_Nein = ifelse(Ja_Stimmen_In_Prozent == 0, TRUE, FALSE))
+  
+  return(dta)
 }
 
-
-
-results <- get_results(json_data,2)
-results <- treat_gemeinden(results)
-#results <- format_data_g(results)
-
-#results <- results[,c(11,4,15)]
-#colnames(results) <- c("ID","Ja_Anteil","Gemeinde")
-
-#for (i in 1:nrow(results)) {
- 
-#  if (results$ID[i] > 6700) {
-    
-#    results$Ja_Anteil[i] <- NA
-  
-#}
-#}
-
-write.csv(results,"results.csv", na = "", row.names = FALSE,fileEncoding = "UTF-8")
-View(results)
+print("Funktionen geladen")
