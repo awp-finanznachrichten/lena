@@ -9,6 +9,7 @@ library(stringi)
 library(xml2)
 library(rjson)
 library(jsonlite)
+library(readxl)
 
 print("Benötigte Bibliotheken geladen")
 
@@ -20,7 +21,7 @@ link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/
 #Metadaten Gemeinden und Kantone
 meta_gmd_kt <- read_csv("Data/MASTERFILE_GDE.csv")
 
-print("Metadaten zu Gemeinden und Kantonen geladen")
+cat("Metadaten zu Gemeinden und Kantonen geladen")
 
 
 

@@ -13,6 +13,8 @@ normal_intro <- function(dta) {
 
 further_on <- function(dta) {
   
+  selection <- dta$Stimmbeteiligung_In_Prozent > 50
+  dta <- storyboard_modifier(dta, selection, "Stimmbeteiligung_high", mode = "append")
   
   
   return(dta)

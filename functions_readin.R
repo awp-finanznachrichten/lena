@@ -3,7 +3,7 @@
 get_vorlagen <- function(dta_raw, sprache="de") {
   
   vorlagen_data <- dta_raw$schweiz$vorlagen$vorlagenTitel
-  print(paste0("Es wurden folgende ",length(vorlagen_data)," Abstimmungsvorlagen gefunden:"))
+  cat(paste0("Es wurden folgende ",length(vorlagen_data)," Abstimmungsvorlagen gefunden:"))
   
   vorlagen <- as.data.frame(vorlagen_data[[1]]) %>%
     filter(langKey ==  sprache) %>%
@@ -20,7 +20,7 @@ get_vorlagen <- function(dta_raw, sprache="de") {
     
   }  
   
-  print(vorlagen$text)
+  cat(vorlagen$text)
   
   return(vorlagen)
   
@@ -179,4 +179,27 @@ augment_raw_data <- function(dta_raw) {
   return(dta)
 }
 
-print("Funktionen geladen")
+#Einträge anfügen oder ersetzen im Storyboard
+storyboard_modifier <- function(df, sel, insert, mode = "append") {
+  if(mode == "append") {
+    iii <- paste(df[sel, "Storyboard"] %>% unlist(), rep(insert), sep = ";") 
+    df[sel, "Storyboard"] <- iii 
+    cat("appended insert ")
+    cat(insert)
+    cat(" to: ")
+    cat(sum(sel))
+    cat(" line(s)\n")
+    return(df)
+  }
+  if(mode == "replace") {
+    df[sel, "Storyboard"] <- rep(insert)
+    cat("replaced ")
+    cat(sum(sel))
+    cat(" line(s) with insert ")
+    cat(insert)
+    cat("\n")
+    return(df)
+  }
+}
+
+cat("Funktionen geladen")
