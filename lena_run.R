@@ -99,7 +99,7 @@ results <- rbind(results_available,results_notavailable) %>%
 ###Output generieren für Datawrapper
 
 output_dw <- results %>%
-  select(Gemeinde_Nr,Ja_Stimmen_In_Prozent,Gemeinde_KT_d,Text_d)
+  select(Gemeinde_Nr,Ja_Stimmen_In_Prozent,Gemeinde_KT_d,Gemeinde_KT_f,Text_d,Text_f)
 
 
 write.csv(output_dw,"Output/Zuwanderung_dw.csv", na = "", row.names = FALSE, fileEncoding = "UTF-8")
