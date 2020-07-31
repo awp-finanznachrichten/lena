@@ -3,11 +3,13 @@
 get_vorlagen <- function(dta_raw, sprache="de") {
   
   vorlagen_data <- dta_raw$schweiz$vorlagen$vorlagenTitel
-  cat(paste0("Es wurden folgende ",length(vorlagen_data)," Abstimmungsvorlagen gefunden:"))
+  cat(paste0("Es wurden folgende ",length(vorlagen_data)," Abstimmungsvorlagen gefunden:\n"))
   
   vorlagen <- as.data.frame(vorlagen_data[[1]]) %>%
     filter(langKey ==  sprache) %>%
     mutate(nummer = 1)
+  
+  vorlagen$id <- dta_raw$schweiz$vorlagen$vorlagenId[1]
   
   for (i in 2:length(vorlagen_data)) {
     
@@ -15,17 +17,19 @@ get_vorlagen <- function(dta_raw, sprache="de") {
       filter(langKey == sprache) %>%
       mutate(nummer = i)
     
+    vorlagen_new$id <- dta_raw$schweiz$vorlagen$vorlagenId[i]
     
     vorlagen <- rbind(vorlagen,vorlagen_new)
     
   }  
   
-  cat(vorlagen$text)
+  cat(vorlagen$text,sep="\n")
   
   return(vorlagen)
   
 }
 
+json_data$schweiz$vorlagen$vorlagenTitel
 
 #Resultate aus JSON-File lesen
 get_results <- function(dta_raw,
@@ -179,27 +183,19 @@ augment_raw_data <- function(dta_raw) {
   return(dta)
 }
 
-#Einträge anfügen oder ersetzen im Storyboard
-storyboard_modifier <- function(df, sel, insert, mode = "append") {
-  if(mode == "append") {
-    iii <- paste(df[sel, "Storyboard"] %>% unlist(), rep(insert), sep = ";") 
-    df[sel, "Storyboard"] <- iii 
-    cat("appended insert ")
-    cat(insert)
-    cat(" to: ")
-    cat(sum(sel))
-    cat(" line(s)\n")
-    return(df)
-  }
-  if(mode == "replace") {
-    df[sel, "Storyboard"] <- rep(insert)
-    cat("replaced ")
-    cat(sum(sel))
-    cat(" line(s) with insert ")
-    cat(insert)
-    cat("\n")
-    return(df)
-  }
+#Historische Daten formatieren
+format_data_hist <- function(results) {
+  out <- results %>%
+    select(Gemeinde_Nr = `Gemeinde-Nr.`,
+           Hist_Ja_Stimmen_In_Prozent = ...11,
+           Hist_Ja_Stimmen_Absolut = ...9,
+           Hist_Nein_Stimmen_Absolut = ...10) %>%
+    mutate(Hist_Nein_Stimmen_In_Prozent = 100 - Hist_Ja_Stimmen_In_Prozent)
+  
+  out <- na.omit(out)
+  return(out)
 }
+
+
 
 cat("Funktionen geladen")

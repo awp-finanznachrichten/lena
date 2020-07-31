@@ -13,10 +13,20 @@ library(readxl)
 
 print("Benötigte Bibliotheken geladen")
 
-#Link zu JSON-Daten
+#Link zu JSON-Daten / Daten einlesen
 link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200209-eidgAbstimmung.json"
+json_data <- fromJSON(link_json, flatten = TRUE)
 
-###Vorhandene Daten laden
+("Aktuelle Abstimmungsdaten geladen")
+
+###Vorhandene Daten laden Gripen / Masseneinwanderungsinitiative
+daten_gripen_bfs <- read_excel("Data/daten_gripen_bfs.xlsx", 
+                               skip = 10)
+daten_masseneinwanderung_bfs <- read_excel("Data/daten_masseneinwanderung_bfs.xlsx", 
+                               skip = 10)
+
+
+cat("Daten zu historischen Abstimmungen geladen")
 
 #Metadaten Gemeinden und Kantone
 meta_gmd_kt <- read_csv("Data/MASTERFILE_GDE.csv")
