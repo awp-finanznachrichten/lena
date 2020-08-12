@@ -45,11 +45,13 @@ results$Text_f <- "Aucune donnée disponible pour l'instant"
 results_notavailable <- results[results$Gebiet_Ausgezaehlt == FALSE,]
 results <- results[results$Gebiet_Ausgezaehlt == TRUE,]
 
+#Sind schon Daten vorhanden?
+if (nrow(results) > 0) {
+
 #Daten anpassen
 results <- augment_raw_data(results)
 
 ###Storyfinder 
-
 results$Einstimmig_Ja[1] <- TRUE
 results$Einstimmig_Nein[1] <- TRUE
 
@@ -94,6 +96,9 @@ results <- replace_variables(results)
 
 ###Texte anpassen und optimieren
 
+
+}
+
 ###Ausgezählte und nicht ausgezählte Gemeinden wieder zusammenführen -> Immer gleiches Format für Datawrapper
 if (nrow(results_notavailable) > 0) {
 
@@ -108,6 +113,7 @@ results <- rbind(results,results_notavailable) %>%
 
 }
 
+
 ###Output generieren für Datawrapper
 
 output_dw <- results %>%
@@ -118,4 +124,4 @@ write.csv(output_dw,"Output/Zuwanderung_dw.csv", na = "", row.names = FALSE, fil
 
 #}
 
-View(results)
+
