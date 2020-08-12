@@ -4,7 +4,7 @@ normal_intro <- function(dta) {
       Einstimmig_Ja == TRUE ~ c("Intro_Unanimous_Ja"),
       Einstimmig_Nein == TRUE ~ c("Intro_Unanimous_Nein"),
       Ja_Stimmen_Absolut > Nein_Stimmen_Absolut ~ c("Intro_Ja"),
-      Ja_Stimmen_Absolut < Nein_Stimmen_Absolut  ~ c("Intro_Nein"),
+      Ja_Stimmen_Absolut < Nein_Stimmen_Absolut ~ c("Intro_Nein"),
       Unentschieden == TRUE ~ c("Intro_Sonderfall")
     ))
 

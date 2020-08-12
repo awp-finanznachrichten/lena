@@ -87,6 +87,7 @@ results_available <- replace_variables(results_available)
 ###Texte anpassen und optimieren
 
 ###Ausgezählte und nicht ausgezählte Gemeinden wieder zusammenführen -> Immer gleiches Format für Datawrapper
+
 results_notavailable$Hist_Ja_Stimmen_In_Prozent <- NA
 results_notavailable$Hist_Ja_Stimmen_Absolut <- NA
 results_notavailable$Hist_Nein_Stimmen_In_Prozent <- NA
