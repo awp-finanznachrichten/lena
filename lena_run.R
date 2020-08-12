@@ -1,5 +1,5 @@
 #Working Directory definieren
-setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
+setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
 
 ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
 source("config.R",encoding = "UTF-8")
@@ -26,7 +26,7 @@ results <- treat_gemeinden(results)
 results <- format_data_g(results)
 
 #Wie viele Gemeinden sind ausgezählt?
-results$Gebiet_Ausgezaehlt[1] <- FALSE
+#results$Gebiet_Ausgezaehlt[1] <- FALSE
 cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgezählt."))
 
 #Neue Variablen
@@ -42,33 +42,41 @@ results$Text_f <- "Aucune donnée disponible pour l'instant"
 
 
 #Ausgezählte Gemeinden auswählen
-results_available <- results[results$Gebiet_Ausgezaehlt == TRUE,]
 results_notavailable <- results[results$Gebiet_Ausgezaehlt == FALSE,]
+results <- results[results$Gebiet_Ausgezaehlt == TRUE,]
 
 #Daten anpassen
-results_available <- augment_raw_data(results_available)
+results <- augment_raw_data(results)
 
 ###Storyfinder 
 
-results_available$Einstimmig_Ja[1] <- TRUE
-results_available$Einstimmig_Nein[1] <- TRUE
+results$Einstimmig_Ja[1] <- TRUE
+results$Einstimmig_Nein[1] <- TRUE
 
 
 #Intros generieren
-results_available <- normal_intro(results_available)
+results <- normal_intro(results)
 
-#LENA classics (falls alle Gemeinden ausgezählt)
+#LENA-Classics (falls alle Gemeinden ausgezählt):
+if (nrow(results_notavailable) == 0) {
 
-#Historischer Vergleich (falls gewünscht)
+results <- lena_classics(results)
+
+}  
+
+#Historischer Vergleich (falls vorhanden)
 
 #Check Vorlagen-ID
 if (vorlagen$id[i] == "6300") {
 
 data_hist <- format_data_hist(daten_masseneinwanderung_bfs)
-results_available <- merge(results_available,data_hist,all.x = TRUE)
-results_available <- hist_storyfinder(results_available)
+results <- merge(results,data_hist,all.x = TRUE)
+results <- hist_storyfinder(results)
 }
 
+#Vergleich innerhalb des Kantons (falls alle Daten vom Kanton vorhanden)
+
+#Check Vorlagen-ID
 
 ###Storybuilder
 
@@ -79,14 +87,15 @@ Textbausteine <- as.data.frame(read_excel("Data/Textbausteine_LENA_September2020
 cat("Textvorlagen geladen")
 
 #Texte einfügen
-results_available <- build_texts(results_available)
+results <- build_texts(results)
 
 #Variablen ersetzen 
-results_available <- replace_variables(results_available)
+results <- replace_variables(results)
 
 ###Texte anpassen und optimieren
 
 ###Ausgezählte und nicht ausgezählte Gemeinden wieder zusammenführen -> Immer gleiches Format für Datawrapper
+if (nrow(results_notavailable) > 0) {
 
 results_notavailable$Hist_Ja_Stimmen_In_Prozent <- NA
 results_notavailable$Hist_Ja_Stimmen_Absolut <- NA
@@ -94,8 +103,10 @@ results_notavailable$Hist_Nein_Stimmen_In_Prozent <- NA
 results_notavailable$Hist_Nein_Stimmen_Absolut <- NA
 
 
-results <- rbind(results_available,results_notavailable) %>%
+results <- rbind(results,results_notavailable) %>%
   arrange(Gemeinde_Nr)
+
+}
 
 ###Output generieren für Datawrapper
 
@@ -107,4 +118,4 @@ write.csv(output_dw,"Output/Zuwanderung_dw.csv", na = "", row.names = FALSE, fil
 
 #}
 
-
+View(results)

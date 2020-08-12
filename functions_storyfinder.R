@@ -1,16 +1,3 @@
-normal_intro <- function(dta) {
-  out <- dta %>%
-    mutate(Storyboard = case_when(
-      Einstimmig_Ja == TRUE ~ c("Intro_Unanimous_Ja"),
-      Einstimmig_Nein == TRUE ~ c("Intro_Unanimous_Nein"),
-      Ja_Stimmen_Absolut > Nein_Stimmen_Absolut ~ c("Intro_Ja"),
-      Ja_Stimmen_Absolut < Nein_Stimmen_Absolut ~ c("Intro_Nein"),
-      Unentschieden == TRUE ~ c("Intro_Sonderfall")
-    ))
-
-  return(out)
-}
-
 #Einträge anfügen oder ersetzen im Storyboard
 storyboard_modifier <- function(df, sel, insert, mode = "append") {
   if(mode == "append") {
@@ -32,6 +19,43 @@ storyboard_modifier <- function(df, sel, insert, mode = "append") {
     cat("\n")
     return(df)
   }
+}
+
+normal_intro <- function(dta) {
+  out <- dta %>%
+    mutate(Storyboard = case_when(
+      Einstimmig_Ja == TRUE ~ c("Intro_Unanimous_Ja"),
+      Einstimmig_Nein == TRUE ~ c("Intro_Unanimous_Nein"),
+      Ja_Stimmen_Absolut > Nein_Stimmen_Absolut ~ c("Intro_Ja"),
+      Ja_Stimmen_Absolut < Nein_Stimmen_Absolut ~ c("Intro_Nein"),
+      Unentschieden == TRUE ~ c("Intro_Sonderfall")
+    ))
+
+  return(out)
+}
+
+lena_classics <- function(dta) {
+  
+  selection <- rank(dta$Ja_Stimmen_In_Prozent)==1
+  dta <- storyboard_modifier(dta, selection, "Intro_Highest_No_CH", mode = "replace")
+  
+  selection <- rank(dta$Ja_Stimmen_In_Prozent)==2
+  dta <- storyboard_modifier(dta, selection, "Intro_2Highest_No_CH", mode = "replace")
+  
+  selection <- rank(dta$Ja_Stimmen_In_Prozent)==3
+  dta <- storyboard_modifier(dta, selection, "Intro_3Highest_No_CH", mode = "replace")
+  
+  selection <- rank(dta$Nein_Stimmen_In_Prozent)==1
+  dta <- storyboard_modifier(dta, selection, "Intro_Highest_Yes_CH", mode = "replace")
+  
+  selection <- rank(dta$Nein_Stimmen_In_Prozent)==2
+  dta <- storyboard_modifier(dta, selection, "Intro_2Highest_Yes_CH", mode = "replace")
+  
+  selection <- rank(dta$Nein_Stimmen_In_Prozent)==3
+  dta <- storyboard_modifier(dta, selection, "Intro_3Highest_Yes_CH", mode = "replace")
+  
+  return(dta)
+  
 }
 
 
@@ -88,13 +112,6 @@ hist_storyfinder <- function(dta) {
   
   }
 
-further_on <- function(dta) {
-  
-  selection <- dta$Stimmbeteiligung_In_Prozent > 50
-  dta <- storyboard_modifier(dta, selection, "Stimmbeteiligung_high", mode = "append")
-  
-  
-  return(dta)
-}
+
 
 
