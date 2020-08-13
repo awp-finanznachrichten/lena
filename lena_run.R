@@ -15,7 +15,7 @@ vorlagen <- get_vorlagen(json_data,"de")
 #####Loop für jede Vorlage
 #for (i in 1:nrow(vorlagen)) {
 
-i <- 2 #LÖSCHEN!!!!
+i <- 1 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
@@ -36,6 +36,18 @@ results <- get_results(json_data,i)
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
 results <- format_data_g(results)
+
+#Kantonsdaten hinzufügen
+results_kantone <- get_results(json_data,i,"cantonal")
+Ja_Stimmen_Kanton <- results_kantone %>%
+  select(Kantons_Nr,jaStimmenInProzent) %>%
+  rename(Ja_Stimmen_In_Prozent_Kanton = jaStimmenInProzent) %>%
+  mutate(Highest_Yes_Kant = FALSE,
+         Highest_No_Kant = FALSE)
+
+results <- merge(results,Ja_Stimmen_Kanton)
+
+
 
 #Wie viele Gemeinden sind ausgezählt?
 results$Gebiet_Ausgezaehlt[1] <- FALSE
@@ -104,6 +116,20 @@ results <- hist_storyfinder(results)
 #Vergleich innerhalb des Kantons (falls alle Daten vom Kanton vorhanden)
 
 #Check Vorlagen-ID
+if (vorlagen$id[i] == "6290" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
+  
+  
+
+
+#Falls mindestens ein Kanton ausgezählt -> Stories für die Kantone finden
+  
+if (sum(results_kantone$gebietAusgezaehlt) > 0) {
+  
+results <- kanton_storyfinder(results)
+
+}
+
+}
 
 ###Storybuilder
 
@@ -153,4 +179,3 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
 #}
-
