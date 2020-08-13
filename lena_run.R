@@ -15,7 +15,7 @@ vorlagen <- get_vorlagen(json_data,"de")
 #####Loop für jede Vorlage
 #for (i in 1:nrow(vorlagen)) {
 
-i <- 1 #LÖSCHEN!!!!
+i <- 2 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
@@ -38,7 +38,7 @@ results <- treat_gemeinden(results)
 results <- format_data_g(results)
 
 #Wie viele Gemeinden sind ausgezählt?
-#results$Gebiet_Ausgezaehlt[1] <- FALSE
+results$Gebiet_Ausgezaehlt[1] <- FALSE
 cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgezählt.\n"))
 
 #Neue Variablen
@@ -83,7 +83,7 @@ results <- lena_classics(results)
 #Check Vorlagen-ID
 hist_check <- FALSE
 
-if (vorlagen$id[i] == "6290") {
+if (vorlagen$id[i] == "6300") {
 
 hist_check <- TRUE 
 data_hist <- format_data_hist(daten_masseneinwanderung_bfs)

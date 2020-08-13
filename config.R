@@ -22,8 +22,8 @@ json_data <- fromJSON(link_json, flatten = TRUE)
 
 
 #Kurznamen Vorlagen (Verwendet im File mit den Textbausteinen)
-vorlagen_short <- c("Zuwanderung","Jagdgesetz","Bundessteuer","Erwerbsersatz","Kampfjet")
-
+#vorlagen_short <- c("Zuwanderung","Jagdgesetz","Bundessteuer","Erwerbsersatz","Kampfjet")
+vorlagen_short <- c("Bla","Zuwanderung")
 ###Vorhandene Daten laden Gripen / Masseneinwanderungsinitiative
 daten_gripen_bfs <- read_excel("Data/daten_gripen_bfs.xlsx", 
                                skip = 10)
