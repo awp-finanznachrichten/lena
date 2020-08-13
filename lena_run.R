@@ -21,16 +21,16 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
 
-#Daten simulieren
-#for (a in 3:nrow(results)) {
+#Daten simulieren Gemeinde!!!
+for (a in 3:nrow(results)) {
 
-#results$gebietAusgezaehlt[a] = TRUE
-#results$jaStimmenInProzent[a] <-   runif(1,0,100)
-#results$jaStimmenAbsolut[a] <- sample(0:10000,1)
-#results$neinStimmenAbsolut[a] <- sample(0:10000,1)
-#results$gueltigeStimmen[a] <- sample(0:10000,1)
+results$gebietAusgezaehlt[a] = TRUE
+results$jaStimmenInProzent[a] <-   runif(1,0,100)
+results$jaStimmenAbsolut[a] <- sample(0:10000,1)
+results$neinStimmenAbsolut[a] <- sample(0:10000,1)
+results$gueltigeStimmen[a] <- sample(0:10000,1)
 
-#}
+}
 
 
 #Daten anpassen Gemeinden
@@ -39,6 +39,15 @@ results <- format_data_g(results)
 
 #Kantonsdaten hinzufügen
 results_kantone <- get_results(json_data,i,"cantonal")
+
+#Daten simulieren Kantone!!!
+for (b in 3:nrow(results_kantone)) {
+  
+  results_kantone$gebietAusgezaehlt[b] <- TRUE
+  results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
+  
+}
+
 Ja_Stimmen_Kanton <- results_kantone %>%
   select(Kantons_Nr,jaStimmenInProzent) %>%
   rename(Ja_Stimmen_In_Prozent_Kanton = jaStimmenInProzent) %>%
@@ -46,7 +55,6 @@ Ja_Stimmen_Kanton <- results_kantone %>%
          Highest_No_Kant = FALSE)
 
 results <- merge(results,Ja_Stimmen_Kanton)
-
 
 
 #Wie viele Gemeinden sind ausgezählt?
@@ -94,8 +102,7 @@ results <- lena_classics(results)
 
 #Check Vorlagen-ID
 
-
-if (vorlagen$id[i] == "6300") {
+if (vorlagen$id[i] == "6310") {
 
 hist_check <- TRUE 
 data_hist <- format_data_hist(daten_masseneinwanderung_bfs)
@@ -128,6 +135,7 @@ results <- kanton_storyfinder(results)
 }
 
 }
+
 
 ###Storybuilder
 
@@ -177,3 +185,5 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
 }
+
+View(results)
