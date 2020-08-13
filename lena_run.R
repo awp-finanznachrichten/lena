@@ -13,10 +13,10 @@ source("functions_storybuilder.R", encoding = "UTF-8")
 vorlagen <- get_vorlagen(json_data,"de")
 
 #####Loop für jede Vorlage
-#for (i in 1:nrow(vorlagen)) {
+for (i in 1:nrow(vorlagen)) {
 
-i <- 2 #LÖSCHEN!!!!
-cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i]))
+#i <- 2 #LÖSCHEN!!!!
+cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
@@ -27,7 +27,7 @@ results <- format_data_g(results)
 
 #Wie viele Gemeinden sind ausgezählt?
 #results$Gebiet_Ausgezaehlt[1] <- FALSE
-cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgezählt."))
+cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgezählt.\n"))
 
 #Neue Variablen
 results$Ja_Nein <- NA
@@ -84,8 +84,7 @@ results <- hist_storyfinder(results)
 
 #Textvorlagen laden
 Textbausteine <- as.data.frame(read_excel("Data/Textbausteine_LENA_September2020.xlsx", 
-                                               sheet = "Zuwanderung"))
-
+                                               sheet = vorlagen_short[i]))
 cat("Textvorlagen geladen")
 
 #Texte einfügen
@@ -120,8 +119,8 @@ output_dw <- results %>%
   select(Gemeinde_Nr,Ja_Stimmen_In_Prozent,Gemeinde_KT_d,Gemeinde_KT_f,Text_d,Text_f)
 
 
-write.csv(output_dw,"Output/Zuwanderung_dw.csv", na = "", row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.names = FALSE, fileEncoding = "UTF-8")
 
-#}
+}
 
 
