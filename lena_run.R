@@ -13,24 +13,24 @@ source("functions_storybuilder.R", encoding = "UTF-8")
 vorlagen <- get_vorlagen(json_data,"de")
 
 #####Loop für jede Vorlage
-for (i in 1:nrow(vorlagen)) {
+#for (i in 1:nrow(vorlagen)) {
 
-#i <- 1 #LÖSCHEN!!!!
+i <- 1 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
 
 #Daten simulieren
-for (a in 3:nrow(results)) {
+#for (a in 3:nrow(results)) {
 
-results$gebietAusgezaehlt[a] = TRUE
-results$jaStimmenInProzent[a] <-   runif(1,0,100)
-results$jaStimmenAbsolut[a] <- sample(0:10000,1)
-results$neinStimmenAbsolut[a] <- sample(0:10000,1)
-results$gueltigeStimmen[a] <- sample(0:10000,1)
+#results$gebietAusgezaehlt[a] = TRUE
+#results$jaStimmenInProzent[a] <-   runif(1,0,100)
+#results$jaStimmenAbsolut[a] <- sample(0:10000,1)
+#results$neinStimmenAbsolut[a] <- sample(0:10000,1)
+#results$gueltigeStimmen[a] <- sample(0:10000,1)
 
-}
+#}
 
 
 #Daten anpassen Gemeinden
@@ -83,7 +83,7 @@ results <- lena_classics(results)
 #Check Vorlagen-ID
 hist_check <- FALSE
 
-if (vorlagen$id[i] == "6310") {
+if (vorlagen$id[i] == "6290") {
 
 hist_check <- TRUE 
 data_hist <- format_data_hist(daten_masseneinwanderung_bfs)
@@ -152,7 +152,5 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
-}
-
-View(results)
+#}
 
