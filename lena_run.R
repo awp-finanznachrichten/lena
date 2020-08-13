@@ -13,9 +13,9 @@ source("functions_storybuilder.R", encoding = "UTF-8")
 vorlagen <- get_vorlagen(json_data,"de")
 
 #####Loop für jede Vorlage
-#for (i in 1:nrow(vorlagen)) {
+for (i in 1:nrow(vorlagen)) {
 
-i <- 1 #LÖSCHEN!!!!
+#i <- 1 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
@@ -64,11 +64,11 @@ results$Storyboard <- NA
 results$Text_d <- "Noch keine Daten vorhanden"
 results$Text_f <- "Aucune donnée disponible pour l'instant"
 
+hist_check <- FALSE
 
 #Ausgezählte Gemeinden auswählen
 results_notavailable <- results[results$Gebiet_Ausgezaehlt == FALSE,]
 results <- results[results$Gebiet_Ausgezaehlt == TRUE,]
-
 
 #Sind schon Daten vorhanden?
 if (nrow(results) > 0) {
@@ -93,7 +93,7 @@ results <- lena_classics(results)
 #Historischer Vergleich (falls vorhanden)
 
 #Check Vorlagen-ID
-hist_check <- FALSE
+
 
 if (vorlagen$id[i] == "6300") {
 
@@ -116,10 +116,8 @@ results <- hist_storyfinder(results)
 #Vergleich innerhalb des Kantons (falls alle Daten vom Kanton vorhanden)
 
 #Check Vorlagen-ID
-if (vorlagen$id[i] == "6290" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
+if (vorlagen$id[i] == "6320" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
   
-  
-
 
 #Falls mindestens ein Kanton ausgezählt -> Stories für die Kantone finden
   
@@ -178,4 +176,4 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
-#}
+}

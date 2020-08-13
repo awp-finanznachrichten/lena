@@ -14,16 +14,16 @@ library(readxl)
 print("Benötigte Bibliotheken geladen")
 
 #Link zu JSON-Daten / Daten einlesen
-link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200209-eidgAbstimmung.json"
-#link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200927-eidgAbstimmung.json" 
+#link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200209-eidgAbstimmung.json"
+link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200927-eidgAbstimmung.json" 
 json_data <- fromJSON(link_json, flatten = TRUE)
 
 ("Aktuelle Abstimmungsdaten geladen")
 
 
 #Kurznamen Vorlagen (Verwendet im File mit den Textbausteinen)
-#vorlagen_short <- c("Zuwanderung","Jagdgesetz","Bundessteuer","Erwerbsersatz","Kampfjet")
-vorlagen_short <- c("Jagdgesetz","Zuwanderung")
+vorlagen_short <- c("Zuwanderung","Jagdgesetz","Bundessteuer","Erwerbsersatz","Kampfjet")
+#vorlagen_short <- c("Jagdgesetz","Zuwanderung")
 ###Vorhandene Daten laden Gripen / Masseneinwanderungsinitiative
 daten_gripen_bfs <- read_excel("Data/daten_gripen_bfs.xlsx", 
                                skip = 10)
