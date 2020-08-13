@@ -15,11 +15,23 @@ vorlagen <- get_vorlagen(json_data,"de")
 #####Loop für jede Vorlage
 for (i in 1:nrow(vorlagen)) {
 
-#i <- 2 #LÖSCHEN!!!!
+#i <- 1 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
+
+#Daten simulieren
+for (a in 3:nrow(results)) {
+
+results$gebietAusgezaehlt[a] = TRUE
+results$jaStimmenInProzent[a] <-   runif(1,0,100)
+results$jaStimmenAbsolut[a] <- sample(0:10000,1)
+results$neinStimmenAbsolut[a] <- sample(0:10000,1)
+results$gueltigeStimmen[a] <- sample(0:10000,1)
+
+}
+
 
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
@@ -43,8 +55,6 @@ results$Text_f <- "Aucune donnée disponible pour l'instant"
 
 #Ausgezählte Gemeinden auswählen
 results_notavailable <- results[results$Gebiet_Ausgezaehlt == FALSE,]
-results_notavailable$Ja_Stimmen_In_Prozent <- 50
-
 results <- results[results$Gebiet_Ausgezaehlt == TRUE,]
 
 
@@ -55,9 +65,8 @@ if (nrow(results) > 0) {
 results <- augment_raw_data(results)
 
 ###Storyfinder 
-results$Einstimmig_Ja[1] <- TRUE
-results$Einstimmig_Nein[1] <- TRUE
-
+#results$Einstimmig_Ja[1] <- TRUE
+#results$Einstimmig_Nein[1] <- TRUE
 
 #Intros generieren
 results <- normal_intro(results)
@@ -72,11 +81,24 @@ results <- lena_classics(results)
 #Historischer Vergleich (falls vorhanden)
 
 #Check Vorlagen-ID
-if (vorlagen$id[i] == "6300") {
+hist_check <- FALSE
 
+if (vorlagen$id[i] == "6310") {
+
+hist_check <- TRUE 
 data_hist <- format_data_hist(daten_masseneinwanderung_bfs)
 results <- merge(results,data_hist,all.x = TRUE)
 results <- hist_storyfinder(results)
+
+}
+
+if (vorlagen$id[i] == "6350") {
+
+hist_check <- TRUE
+data_hist <- format_data_hist(daten_gripen_bfs)
+results <- merge(results,data_hist,all.x = TRUE)
+results <- hist_storyfinder(results)
+  
 }
 
 #Vergleich innerhalb des Kantons (falls alle Daten vom Kanton vorhanden)
@@ -101,14 +123,18 @@ results <- replace_variables(results)
 
 }
 
+
 ###Ausgezählte und nicht ausgezählte Gemeinden wieder zusammenführen -> Immer gleiches Format für Datawrapper
 if (nrow(results_notavailable) > 0) {
 
+results_notavailable$Ja_Stimmen_In_Prozent <- 50
+
+if (hist_check == TRUE) {
 results_notavailable$Hist_Ja_Stimmen_In_Prozent <- NA
 results_notavailable$Hist_Ja_Stimmen_Absolut <- NA
 results_notavailable$Hist_Nein_Stimmen_In_Prozent <- NA
 results_notavailable$Hist_Nein_Stimmen_Absolut <- NA
-
+}
 
 results <- rbind(results,results_notavailable) %>%
   arrange(Gemeinde_Nr)
@@ -124,6 +150,9 @@ output_dw <- results %>%
 
 write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.names = FALSE, fileEncoding = "UTF-8")
 
+cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
+
 }
 
 View(results)
+
