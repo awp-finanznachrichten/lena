@@ -43,7 +43,10 @@ results$Text_f <- "Aucune donnée disponible pour l'instant"
 
 #Ausgezählte Gemeinden auswählen
 results_notavailable <- results[results$Gebiet_Ausgezaehlt == FALSE,]
+results_notavailable$Ja_Stimmen_In_Prozent <- 50
+
 results <- results[results$Gebiet_Ausgezaehlt == TRUE,]
+
 
 #Sind schon Daten vorhanden?
 if (nrow(results) > 0) {
@@ -123,4 +126,4 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 }
 
-
+View(results)
