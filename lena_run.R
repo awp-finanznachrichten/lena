@@ -13,25 +13,24 @@ source("functions_storybuilder.R", encoding = "UTF-8")
 vorlagen <- get_vorlagen(json_data,"de")
 
 #####Loop für jede Vorlage
-for (i in 1:nrow(vorlagen)) {
+#for (i in 1:nrow(vorlagen)) {
 
-#i <- 1 #LÖSCHEN!!!!
+i <- 1 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
-for (a in 162:nrow(results)) {
+#for (a in 162:nrow(results)) {
 
-results$gebietAusgezaehlt[a] = TRUE
-results$jaStimmenInProzent[a] <-   runif(1,0,100)
-results$jaStimmenAbsolut[a] <- sample(0:10000,1)
-results$neinStimmenAbsolut[a] <- sample(0:10000,1)
-results$gueltigeStimmen[a] <- sample(0:10000,1)
+#results$gebietAusgezaehlt[a] = TRUE
+#results$jaStimmenInProzent[a] <-   runif(1,0,100)
+#results$jaStimmenAbsolut[a] <- sample(0:10000,1)
+#results$neinStimmenAbsolut[a] <- sample(0:10000,1)
+#results$gueltigeStimmen[a] <- sample(0:10000,1)
 
-}
-
+#}
 
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
@@ -41,12 +40,12 @@ results <- format_data_g(results)
 results_kantone <- get_results(json_data,i,"cantonal")
 
 #Daten simulieren Kantone!!!
-for (b in 2:nrow(results_kantone)) {
+#for (b in 2:nrow(results_kantone)) {
   
-  results_kantone$gebietAusgezaehlt[b] <- TRUE
-  results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
+#  results_kantone$gebietAusgezaehlt[b] <- TRUE
+#  results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
   
-}
+#}
 
 Ja_Stimmen_Kanton <- results_kantone %>%
   select(Kantons_Nr,jaStimmenInProzent) %>%
@@ -58,7 +57,12 @@ results <- merge(results,Ja_Stimmen_Kanton)
 
 
 #Wie viele Gemeinden sind ausgezählt?
-results$Gebiet_Ausgezaehlt[1] <- FALSE
+for (c in 1:161) {
+
+results$Gebiet_Ausgezaehlt[c] <- FALSE
+
+}
+
 cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgezählt.\n"))
 
 #Neue Variablen
@@ -102,7 +106,7 @@ results <- lena_classics(results)
 
 #Check Vorlagen-ID
 
-if (vorlagen$id[i] == "6310") {
+if (vorlagen$id[i] == "6300") {
 
 hist_check <- TRUE 
 data_hist <- format_data_hist(daten_masseneinwanderung_bfs)
@@ -185,6 +189,8 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
-}
+#}
 
-View(results)
+
+
+
