@@ -127,7 +127,7 @@ results <- hist_storyfinder(results)
 #Vergleich innerhalb des Kantons (falls alle Daten vom Kanton vorhanden)
 
 #Check Vorlagen-ID
-if (vorlagen$id[i] == "6320" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
+if (vorlagen$id[i] == "6290" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
   
 
 #Falls mindestens ein Kanton ausgezählt -> Stories für die Kantone finden
@@ -191,6 +191,7 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
 #}
 
-
+library(xlsx)
+write.xlsx(output_dw,"LENA_texts_Jagdgesetz.xlsx",row.names=FALSE)
 
 
