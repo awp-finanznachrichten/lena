@@ -85,3 +85,28 @@ for (i in 1:nrow(dta)) {
 return(dta)   
 }
 
+excuse_my_french <- function(dta) {
+  
+  for (i in 1:nrow(dta)) {
+    
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"de A","d'A") 
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"de E","d'E")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"de I","d'I") 
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"de O","d'O") 
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"de U","d'U")
+  
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Jura","canton du Jura")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Valais","en Valais")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Argovie","canton d'Argovie")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Appenzell Rhodes-Extérieures","canton d'Appenzell Rhodes-Extérieures")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Juracanton Appenzell Rhodes-Intérieures","canton d'Appenzell Rhodes-Intérieures")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Grisons","canton des Grisons")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Obwald","canton d'Obwald")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Uri","canton d'Uri")
+  
+  }  
+  
+  
+  return(dta)   
+  
+} 

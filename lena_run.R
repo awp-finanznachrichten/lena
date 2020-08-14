@@ -1,5 +1,5 @@
 #Working Directory definieren
-setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
+setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
 
 ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
 source("config.R",encoding = "UTF-8")
@@ -22,7 +22,7 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
-for (a in 3:nrow(results)) {
+for (a in 162:nrow(results)) {
 
 results$gebietAusgezaehlt[a] = TRUE
 results$jaStimmenInProzent[a] <-   runif(1,0,100)
@@ -41,7 +41,7 @@ results <- format_data_g(results)
 results_kantone <- get_results(json_data,i,"cantonal")
 
 #Daten simulieren Kantone!!!
-for (b in 3:nrow(results_kantone)) {
+for (b in 2:nrow(results_kantone)) {
   
   results_kantone$gebietAusgezaehlt[b] <- TRUE
   results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
@@ -152,6 +152,7 @@ results <- replace_variables(results)
 
 ###Texte anpassen und optimieren
 
+results <- excuse_my_french(results)
 
 }
 
