@@ -56,13 +56,19 @@ Ja_Stimmen_Kanton <- results_kantone %>%
 results <- merge(results,Ja_Stimmen_Kanton)
 
 
+#Kanton Jura entfernen
+#for (c in 1:nrow(results)) {
+  
+#  if (results$Kantons_Nr[c] == 26) {
+
+#results$Gebiet_Ausgezaehlt[c] <- FALSE
+
+#}
+
+#}
+
+
 #Wie viele Gemeinden sind ausgezählt?
-for (c in 1:161) {
-
-results$Gebiet_Ausgezaehlt[c] <- FALSE
-
-}
-
 cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgezählt.\n"))
 
 #Neue Variablen
@@ -155,7 +161,6 @@ results <- build_texts(results)
 results <- replace_variables(results)
 
 ###Texte anpassen und optimieren
-
 results <- excuse_my_french(results)
 
 }
@@ -191,7 +196,5 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
 #}
 
-library(xlsx)
-write.xlsx(output_dw,"LENA_texts_Jagdgesetz.xlsx",row.names=FALSE)
-
-
+#library(xlsx)
+#write.xlsx(output_dw,"LENA_Texte_Jagdgesetz.xlsx",row.names=FALSE)
