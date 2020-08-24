@@ -172,7 +172,3 @@ kanton_storyfinder <- function(dta) {
   
 }
 
-
-
-
-
