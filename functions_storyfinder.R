@@ -82,13 +82,13 @@ hist_storyfinder <- function(dta) {
   selection <- is.na(dta$Hist_Ja_Stimmen_In_Prozent) == FALSE &
     dta$Ja_Stimmen_In_Prozent < 50 &
     dta$Hist_Ja_Stimmen_In_Prozent < 50 &
-    dta$Ja_Stimmen_In_Prozent > dta$Hist_Ja_Stimmen_In_Prozent
+    dta$Ja_Stimmen_In_Prozent < dta$Hist_Ja_Stimmen_In_Prozent
   dta <- storyboard_modifier(dta, selection, "HistoricPhrase_Nein_Nein_NeinAnteilGestiegen", mode = "append")
   
   selection <- is.na(dta$Hist_Ja_Stimmen_In_Prozent) == FALSE &
     dta$Ja_Stimmen_In_Prozent < 50 &
     dta$Hist_Ja_Stimmen_In_Prozent < 50 &
-    dta$Ja_Stimmen_In_Prozent < dta$Hist_Ja_Stimmen_In_Prozent
+    dta$Ja_Stimmen_In_Prozent > dta$Hist_Ja_Stimmen_In_Prozent
   dta <- storyboard_modifier(dta, selection, "HistoricPhrase_Nein_Nein_NeinAnteilGesunken", mode = "append")
   
   selection <- is.na(dta$Hist_Ja_Stimmen_In_Prozent) == FALSE &

@@ -1,5 +1,5 @@
 #Working Directory definieren
-setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
+setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
 
 ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
 source("config.R",encoding = "UTF-8")
@@ -112,7 +112,7 @@ results <- lena_classics(results)
 
 #Check Vorlagen-ID
 
-if (vorlagen$id[i] == "6300") {
+if (vorlagen$id[i] == "6310") {
 
 hist_check <- TRUE 
 data_hist <- format_data_hist(daten_masseneinwanderung_bfs)
@@ -133,7 +133,7 @@ results <- hist_storyfinder(results)
 #Vergleich innerhalb des Kantons (falls alle Daten vom Kanton vorhanden)
 
 #Check Vorlagen-ID
-if (vorlagen$id[i] == "6290" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
+if (vorlagen$id[i] == "6320" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
   
 
 #Falls mindestens ein Kanton ausgezählt -> Stories für die Kantone finden
@@ -145,7 +145,6 @@ results <- kanton_storyfinder(results)
 }
 
 }
-
 
 ###Storybuilder
 
@@ -198,3 +197,4 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
 #library(xlsx)
 #write.xlsx(output_dw,"LENA_Texte_Jagdgesetz.xlsx",row.names=FALSE)
+View(output_dw)
