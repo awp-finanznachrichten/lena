@@ -1,3 +1,5 @@
+time_start <- Sys.time()
+print(time_start)
 #Working Directory definieren
 setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
 
@@ -32,6 +34,7 @@ results$gueltigeStimmen[a] <- results$jaStimmenAbsolut[a] + results$neinStimmenA
 results$jaStimmenInProzent[a] <- results$jaStimmenAbsolut[a]*100/results$gueltigeStimmen[a]
 
 }
+
 
 
 #Daten anpassen Gemeinden
@@ -198,6 +201,9 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
 }
 
+time_end <- Sys.time()
+print(time_end)
+print(time_end-time_start)
 #library(xlsx)
 #write.xlsx(output_dw,"LENA_Texte_Jagdgesetz.xlsx",row.names=FALSE)
 
