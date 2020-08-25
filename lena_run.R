@@ -163,7 +163,7 @@ results <- replace_variables(results)
 results <- excuse_my_french(results)
 
 #Print out texts
-cat(paste0(results$Gemeinde_d,"\n",results$Text_d,"\n",results$Text_f,collapse="\n\n"))
+cat(paste0(results$Gemeinde_d,"\n",results$Text_d,"\n\n",results$Text_f,collapse="\n\n"))
 
 }
 ###Ausgezählte und nicht ausgezählte Gemeinden wieder zusammenführen -> Immer gleiches Format für Datawrapper
