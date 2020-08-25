@@ -22,15 +22,17 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
-#for (a in 162:nrow(results)) {
+for (a in 1:nrow(results)) {
 
-#results$gebietAusgezaehlt[a] = TRUE
-#results$jaStimmenInProzent[a] <-   runif(1,0,100)
-#results$jaStimmenAbsolut[a] <- sample(0:10000,1)
-#results$neinStimmenAbsolut[a] <- sample(0:10000,1)
-#results$gueltigeStimmen[a] <- sample(0:10000,1)
+results$gebietAusgezaehlt[a] = TRUE
 
-#}
+results$jaStimmenAbsolut[a] <- sample(0:10000,1)
+results$neinStimmenAbsolut[a] <- sample(0:10000,1)
+results$gueltigeStimmen[a] <- results$jaStimmenAbsolut[a] + results$neinStimmenAbsolut[a]
+results$jaStimmenInProzent[a] <- results$jaStimmenAbsolut[a]*100/results$gueltigeStimmen[a]
+
+}
+
 
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
@@ -40,12 +42,12 @@ results <- format_data_g(results)
 results_kantone <- get_results(json_data,i,"cantonal")
 
 #Daten simulieren Kantone!!!
-#for (b in 2:nrow(results_kantone)) {
+for (b in 1:nrow(results_kantone)) {
   
-#  results_kantone$gebietAusgezaehlt[b] <- TRUE
-#  results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
+  results_kantone$gebietAusgezaehlt[b] <- TRUE
+  results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
   
-#}
+}
 
 Ja_Stimmen_Kanton <- results_kantone %>%
   select(Kantons_Nr,jaStimmenInProzent) %>%
