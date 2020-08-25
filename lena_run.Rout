@@ -1,0 +1,307 @@
+
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R ist freie Software und kommt OHNE JEGLICHE GARANTIE.
+Sie sind eingeladen, es unter bestimmten Bedingungen weiter zu verbreiten.
+Tippen Sie 'license()' or 'licence()' f¸r Details dazu.
+
+R ist ein Gemeinschaftsprojekt mit vielen Beitragenden.
+Tippen Sie 'contributors()' f¸r mehr Information und 'citation()',
+um zu erfahren, wie R oder R packages in Publikationen zitiert werden kˆnnen.
+
+Tippen Sie 'demo()' f¸r einige Demos, 'help()' f¸r on-line Hilfe, oder
+'help.start()' f¸r eine HTML Browserschnittstelle zur Hilfe.
+Tippen Sie 'q()', um R zu verlassen.
+
+[Vorher gesicherter Workspace wiederhergestellt]
+
+> #Working Directory definieren
+> setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
+> 
+> ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
+> source("config.R",encoding = "UTF-8")
+
+Attache Paket: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attache Paket: 'jsonlite'
+
+The following objects are masked from 'package:rjson':
+
+    fromJSON, toJSON
+
+The following object is masked from 'package:purrr':
+
+    flatten
+
+[1] "Benˆtigte Bibliotheken geladen"
+New names:
+* `` -> ...5
+* `` -> ...6
+* `` -> ...7
+* `` -> ...8
+* `` -> ...9
+* ... and 2 more problems
+New names:
+* `` -> ...5
+* `` -> ...6
+* `` -> ...7
+* `` -> ...8
+* `` -> ...9
+* ... and 2 more problems
+Daten zu historischen Abstimmungen geladenParsed with column specification:
+cols(
+  Gemeinde_Nr = col_double(),
+  Kanton_Short = col_character(),
+  Gemeinde_d = col_character(),
+  Gemeinde_f = col_character(),
+  Gemeinde_KT_d = col_character(),
+  Gemeinde_KT_f = col_character(),
+  Kanton_d = col_character(),
+  Kanton_f = col_character(),
+  Kantons_Nr = col_double()
+)
+Metadaten zu Gemeinden und Kantonen geladenEs gab 50 oder mehr Warnungen (Anzeige der ersten 50 mit warnings())
+> 
+> ###Funktionen laden
+> source("functions_readin.R", encoding = "UTF-8")
+Funktionen geladen> source("functions_storyfinder.R", encoding = "UTF-8")
+> source("functions_storybuilder.R", encoding = "UTF-8")
+> 
+> #Anzahl, Name und Nummer der Vorlagen von JSON einlesen
+> vorlagen <- get_vorlagen(json_data,"de")
+Es wurden folgende 5 Abstimmungsvorlagen gefunden:
+Volksinitiative ´F¸r eine massvolle Zuwanderung (Begrenzungsinitiative)ª
+Bundesgesetz ¸ber die Jagd und den Schutz wildlebender S‰ugetiere und Vˆgel (Jagdgesetz, JSG)
+Bundesgesetz ¸ber die direkte Bundessteuer (DBG) (Steuerliche Ber¸cksichtigung der Kinderdrittbetreuungskosten)
+Erwerbsersatzgesetz (indirekter Gegenvorschlag zur Volksinitiative ´F¸r einen vern¸nftigen Vaterschaftsurlaub - zum Nutzen der ganzen Familieª)
+Bundesbeschluss ¸ber die Beschaffung neuer Kampfflugzeuge
+> 
+> #####Loop f√ºr jede Vorlage
+> for (i in 1:nrow(vorlagen)) {
++ 
++ #i <- 1 #L√ñSCHEN!!!!
++ cat(paste0("Ermittle Daten f√ºr folgende Vorlage: ",vorlagen$text[i],"\n"))
++   
++ ###Resultate aus JSON auslesen 
++ results <- get_results(json_data,i)
++ 
++ #Daten simulieren Gemeinde!!!
++ #for (a in 162:nrow(results)) {
++ 
++ #results$gebietAusgezaehlt[a] = TRUE
++ #results$jaStimmenInProzent[a] <-   runif(1,0,100)
++ #results$jaStimmenAbsolut[a] <- sample(0:10000,1)
++ #results$neinStimmenAbsolut[a] <- sample(0:10000,1)
++ #results$gueltigeStimmen[a] <- sample(0:10000,1)
++ 
++ #}
++ 
++ #Daten anpassen Gemeinden
++ results <- treat_gemeinden(results)
++ results <- format_data_g(results)
++ 
++ #Kantonsdaten hinzuf√ºgen
++ results_kantone <- get_results(json_data,i,"cantonal")
++ 
++ #Daten simulieren Kantone!!!
++ #for (b in 2:nrow(results_kantone)) {
++   
++ #  results_kantone$gebietAusgezaehlt[b] <- TRUE
++ #  results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
++   
++ #}
++ 
++ Ja_Stimmen_Kanton <- results_kantone %>%
++   select(Kantons_Nr,jaStimmenInProzent) %>%
++   rename(Ja_Stimmen_In_Prozent_Kanton = jaStimmenInProzent) %>%
++   mutate(Highest_Yes_Kant = FALSE,
++          Highest_No_Kant = FALSE)
++ 
++ results <- merge(results,Ja_Stimmen_Kanton)
++ 
++ 
++ #Kanton Jura entfernen
++ #for (c in 1:nrow(results)) {
++   
++ #  if (results$Kantons_Nr[c] == 26) {
++ 
++ #results$Gebiet_Ausgezaehlt[c] <- FALSE
++ 
++ #}
++ 
++ #}
++ 
++ 
++ #Wie viele Gemeinden sind ausgez√§hlt?
++ cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgez√§hlt.\n"))
++ 
++ #Neue Variablen
++ results$Ja_Nein <- NA
++ results$Oui_Non <- NA
++ results$Nein_Stimmen_In_Prozent <- NA
++ results$Unentschieden <- NA
++ results$Einstimmig_Ja <- NA
++ results$Einstimmig_Nein <- NA
++ results$Storyboard <- NA
++ results$Text_d <- "Noch keine Daten vorhanden"
++ results$Text_f <- "Aucune donn√©e disponible pour l'instant"
++ 
++ hist_check <- FALSE
++ 
++ #Ausgez√§hlte Gemeinden ausw√§hlen
++ results_notavailable <- results[results$Gebiet_Ausgezaehlt == FALSE,]
++ results <- results[results$Gebiet_Ausgezaehlt == TRUE,]
++ 
++ #Sind schon Daten vorhanden?
++ if (nrow(results) > 0) {
++ 
++ #Daten anpassen
++ results <- augment_raw_data(results)
++ 
++ ###Storyfinder 
++ #results$Einstimmig_Ja[1] <- TRUE
++ #results$Einstimmig_Nein[1] <- TRUE
++ 
++ #Intros generieren
++ results <- normal_intro(results)
++ 
++ #LENA-Classics (falls alle Gemeinden ausgez√§hlt):
++ if (nrow(results_notavailable) == 0) {
++ 
++ results <- lena_classics(results)
++ 
++ }  
++ 
++ #Historischer Vergleich (falls vorhanden)
++ 
++ #Check Vorlagen-ID
++ 
++ if (vorlagen$id[i] == "6310") {
++ 
++ hist_check <- TRUE 
++ data_hist <- format_data_hist(daten_masseneinwanderung_bfs)
++ results <- merge(results,data_hist,all.x = TRUE)
++ results <- hist_storyfinder(results)
++ 
++ }
++ 
++ if (vorlagen$id[i] == "6350") {
++ 
++ hist_check <- TRUE
++ data_hist <- format_data_hist(daten_gripen_bfs)
++ results <- merge(results,data_hist,all.x = TRUE)
++ results <- hist_storyfinder(results)
++   
++ }
++ 
++ #Vergleich innerhalb des Kantons (falls alle Daten vom Kanton vorhanden)
++ 
++ #Check Vorlagen-ID
++ if (vorlagen$id[i] == "6320" || vorlagen$id[i] == "6330" || vorlagen$id[i] == "6340") {
++   
++ 
++ #Falls mindestens ein Kanton ausgez√§hlt -> Stories f√ºr die Kantone finden
++   
++ if (sum(results_kantone$gebietAusgezaehlt) > 0) {
++   
++ results <- kanton_storyfinder(results)
++ 
++ }
++ 
++ }
++ 
++ ###Storybuilder
++ 
++ #Textvorlagen laden
++ Textbausteine <- as.data.frame(read_excel("Data/Textbausteine_LENA_September2020.xlsx", 
++                                                sheet = vorlagen_short[i]))
++ cat("Textvorlagen geladen")
++ 
++ #Texte einf√ºgen
++ results <- build_texts(results)
++ 
++ #Variablen ersetzen 
++ results <- replace_variables(results)
++ 
++ ###Texte anpassen und optimieren
++ results <- excuse_my_french(results)
++ 
++ }
++ 
++ 
++ ###Ausgez√§hlte und nicht ausgez√§hlte Gemeinden wieder zusammenf√ºhren -> Immer gleiches Format f√ºr Datawrapper
++ if (nrow(results_notavailable) > 0) {
++ 
++ results_notavailable$Ja_Stimmen_In_Prozent <- 50
++ 
++ if (hist_check == TRUE) {
++ results_notavailable$Hist_Ja_Stimmen_In_Prozent <- NA
++ results_notavailable$Hist_Ja_Stimmen_Absolut <- NA
++ results_notavailable$Hist_Nein_Stimmen_In_Prozent <- NA
++ results_notavailable$Hist_Nein_Stimmen_Absolut <- NA
++ }
++ 
++ results <- rbind(results,results_notavailable) %>%
++   arrange(Gemeinde_Nr)
++ 
++ }
++ 
++ 
++ ###Output generieren f√ºr Datawrapper
++ 
++ output_dw <- results %>%
++   select(Gemeinde_Nr,Ja_Stimmen_In_Prozent,Gemeinde_KT_d,Gemeinde_KT_f,Text_d,Text_f)
++ 
++ 
++ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.names = FALSE, fileEncoding = "UTF-8")
++ 
++ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
++ 
++ }
+Ermittle Daten f√ºr folgende Vorlage: Volksinitiative ´F¸r eine massvolle Zuwanderung (Begrenzungsinitiative)ª
+1 Gemeinden sind ausgez√§hlt.
+appended insert HistoricPhrase_Ja_Ja_JaAnteilGestiegen to: 0 line(s)
+appended insert HistoricPhrase_Ja_Ja_JaAnteilGesunken to: 0 line(s)
+appended insert HistoricPhrase_Ja_Ja_JaAnteilUnver‰ndert to: 0 line(s)
+appended insert HistoricPhrase_Nein_Nein_NeinAnteilGestiegen to: 1 line(s)
+appended insert HistoricPhrase_Nein_Nein_NeinAnteilGesunken to: 0 line(s)
+appended insert HistoricPhrase_Nein_Nein_NeinAnteilUnver‰ndert to: 0 line(s)
+appended insert HistoricPhrase_Nein_Ja to: 0 line(s)
+appended insert HistoricPhrase_Ja_Nein to: 0 line(s)
+Textvorlagen geladen
+Generated output for Vorlage Zuwanderung
+Ermittle Daten f√ºr folgende Vorlage: Bundesgesetz ¸ber die Jagd und den Schutz wildlebender S‰ugetiere und Vˆgel (Jagdgesetz, JSG)
+0 Gemeinden sind ausgez√§hlt.
+
+Generated output for Vorlage Jagdgesetz
+Ermittle Daten f√ºr folgende Vorlage: Bundesgesetz ¸ber die direkte Bundessteuer (DBG) (Steuerliche Ber¸cksichtigung der Kinderdrittbetreuungskosten)
+0 Gemeinden sind ausgez√§hlt.
+
+Generated output for Vorlage Bundessteuer
+Ermittle Daten f√ºr folgende Vorlage: Erwerbsersatzgesetz (indirekter Gegenvorschlag zur Volksinitiative ´F¸r einen vern¸nftigen Vaterschaftsurlaub - zum Nutzen der ganzen Familieª)
+0 Gemeinden sind ausgez√§hlt.
+
+Generated output for Vorlage Erwerbsersatz
+Ermittle Daten f√ºr folgende Vorlage: Bundesbeschluss ¸ber die Beschaffung neuer Kampfflugzeuge
+0 Gemeinden sind ausgez√§hlt.
+
+Generated output for Vorlage Kampfjet
+> 
+> #library(xlsx)
+> #write.xlsx(output_dw,"LENA_Texte_Jagdgesetz.xlsx",row.names=FALSE)
+> 
+> 
+> proc.time()
+       User      System verstrichen 
+       1.67        0.20        1.93 

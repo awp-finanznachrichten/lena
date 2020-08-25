@@ -13,9 +13,9 @@ source("functions_storybuilder.R", encoding = "UTF-8")
 vorlagen <- get_vorlagen(json_data,"de")
 
 #####Loop für jede Vorlage
-#for (i in 1:nrow(vorlagen)) {
+for (i in 1:nrow(vorlagen)) {
 
-i <- 1 #LÖSCHEN!!!!
+#i <- 1 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
@@ -151,7 +151,7 @@ results <- kanton_storyfinder(results)
 #Textvorlagen laden
 Textbausteine <- as.data.frame(read_excel("Data/Textbausteine_LENA_September2020.xlsx", 
                                                sheet = vorlagen_short[i]))
-cat("Textvorlagen geladen")
+cat("Textvorlagen geladen\n\n")
 
 #Texte einfügen
 results <- build_texts(results)
@@ -162,9 +162,10 @@ results <- replace_variables(results)
 ###Texte anpassen und optimieren
 results <- excuse_my_french(results)
 
+#Print out texts
+cat(paste0(results$Gemeinde_d,"\n",results$Text_d,"\n",results$Text_f,collapse="\n\n"))
+
 }
-
-
 ###Ausgezählte und nicht ausgezählte Gemeinden wieder zusammenführen -> Immer gleiches Format für Datawrapper
 if (nrow(results_notavailable) > 0) {
 
@@ -193,7 +194,7 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
-#}
+}
 
 #library(xlsx)
 #write.xlsx(output_dw,"LENA_Texte_Jagdgesetz.xlsx",row.names=FALSE)
