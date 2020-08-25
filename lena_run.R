@@ -35,8 +35,6 @@ results$jaStimmenInProzent[a] <- results$jaStimmenAbsolut[a]*100/results$gueltig
 
 }
 
-
-
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
 results <- format_data_g(results)
