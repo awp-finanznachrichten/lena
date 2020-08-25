@@ -149,15 +149,15 @@ kanton_storyfinder <- function(dta) {
   selection <- is.na(dta$Ja_Stimmen_In_Prozent_Kanton) == FALSE &
     dta$Highest_Yes_Kant == FALSE &
     dta$Highest_No_Kant == FALSE &
-    dta$Ja_Stimmen_In_Prozent_Kanton > 50 &
-    dta$Ja_Stimmen_In_Prozent < 50
+    dta$Ja_Stimmen_In_Prozent_Kanton < 50 &
+    dta$Ja_Stimmen_In_Prozent > 50
   dta <- storyboard_modifier(dta, selection, "KantonPhrase_Ja_Nein", mode = "append")
   
   selection <- is.na(dta$Ja_Stimmen_In_Prozent_Kanton) == FALSE &
     dta$Highest_Yes_Kant == FALSE &
     dta$Highest_No_Kant == FALSE &
-    dta$Ja_Stimmen_In_Prozent_Kanton < 50 &
-    dta$Ja_Stimmen_In_Prozent > 50
+    dta$Ja_Stimmen_In_Prozent_Kanton > 50 &
+    dta$Ja_Stimmen_In_Prozent < 50
   dta <- storyboard_modifier(dta, selection, "KantonPhrase_Nein_Ja", mode = "append")
   
   selection <- is.na(dta$Ja_Stimmen_In_Prozent_Kanton) == FALSE &
