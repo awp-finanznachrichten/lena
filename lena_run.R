@@ -197,4 +197,4 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
 #library(xlsx)
 #write.xlsx(output_dw,"LENA_Texte_Jagdgesetz.xlsx",row.names=FALSE)
-View(output_dw)
+
