@@ -112,7 +112,7 @@ excuse_my_french <- function(dta) {
   dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"du canton Valais","en Valais")
   dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Argovie","canton d'Argovie")
   dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Appenzell Rhodes-Extérieures","canton d'Appenzell Rhodes-Extérieures")
-  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Juracanton Appenzell Rhodes-Intérieures","canton d'Appenzell Rhodes-Intérieures")
+  dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Appenzell Rhodes-Intérieures","canton d'Appenzell Rhodes-Intérieures")
   dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Grisons","canton des Grisons")
   dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Obwald","canton d'Obwald")
   dta$Text_f[i] <- str_replace_all(dta$Text_f[i],"canton Uri","canton d'Uri")
