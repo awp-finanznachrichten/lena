@@ -15,8 +15,8 @@ print("Benötigte Bibliotheken geladen\n")
 
 #Link zu JSON-Daten / Daten einlesen
 #link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200209-eidgAbstimmung.json"
-#link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200927-eidgAbstimmung.json" 
-link_json <- "Data/sd-t-17-02-20200927-eidgAbstimmung.json"
+link_json <- "https://app-prod-static-voteinfo.s3.eu-central-1.amazonaws.com/v1/ogd/sd-t-17-02-20200927-eidgAbstimmung.json" 
+#link_json <- "Data/sd-t-17-02-20200927-eidgAbstimmung.json"
 json_data <- fromJSON(link_json, flatten = TRUE)
 
 ("Aktuelle Abstimmungsdaten geladen\n")
