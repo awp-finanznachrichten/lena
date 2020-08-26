@@ -23,9 +23,10 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
 
+
 #Daten simulieren Gemeinde!!!
 for (a in 1:nrow(results)) {
-
+  
 results$gebietAusgezaehlt[a] = TRUE
 
 results$jaStimmenAbsolut[a] <- sample(0:10000,1)
@@ -202,6 +203,7 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 time_end <- Sys.time()
 print(time_end)
 print(time_end-time_start)
+
 #library(xlsx)
-#write.xlsx(output_dw,"LENA_Texte_Jagdgesetz.xlsx",row.names=FALSE)
+#write.xlsx(results,"LENA_Texte_Zuwanderung.xlsx",row.names=FALSE)
 
