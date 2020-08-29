@@ -1,7 +1,7 @@
 time_start <- Sys.time()
 print(time_start)
 #Working Directory definieren
-setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
+setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
 
 ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
 source("config.R",encoding = "UTF-8")
@@ -61,15 +61,15 @@ results <- merge(results,Ja_Stimmen_Kanton)
 
 
 #Kanton Jura entfernen
-#for (c in 1:nrow(results)) {
+for (c in 1:nrow(results)) {
   
-#  if (results$Kantons_Nr[c] == 26) {
+  if (results$Kantons_Nr[c] == 26) {
 
-#results$Gebiet_Ausgezaehlt[c] <- FALSE
+results$Gebiet_Ausgezaehlt[c] <- FALSE
 
-#}
+}
 
-#}
+}
 
 
 #Wie viele Gemeinden sind ausgezählt?
