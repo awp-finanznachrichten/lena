@@ -1,7 +1,7 @@
 time_start <- Sys.time()
 print(time_start)
 #Working Directory definieren
-setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
+setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
 
 ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
 source("config.R",encoding = "UTF-8")
