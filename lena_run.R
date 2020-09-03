@@ -1,7 +1,7 @@
 time_start <- Sys.time()
 print(time_start)
 #Working Directory definieren
-setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
+setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
 
 ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
 source("config.R",encoding = "UTF-8")
@@ -22,7 +22,6 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
-
 
 #Daten simulieren Gemeinde!!!
 for (a in 1:nrow(results)) {
