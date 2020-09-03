@@ -1,5 +1,6 @@
 time_start <- Sys.time()
 print(time_start)
+
 #Working Directory definieren
 setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
 
@@ -83,7 +84,7 @@ results$Einstimmig_Ja <- NA
 results$Einstimmig_Nein <- NA
 results$Storyboard <- NA
 results$Text_d <- "Noch keine Daten vorhanden"
-results$Text_f <- "Aucune donnée disponible pour l'instant"
+results$Text_f <- "Les résultats ne sont pas encore connus dans cette commune"
 
 hist_check <- FALSE
 
@@ -197,12 +198,14 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
+#library(xlsx)
+#write.xlsx(results,paste0("LENA_Texte_",vorlagen_short[i],".xlsx"),row.names=FALSE)
+
 }
 
 time_end <- Sys.time()
 print(time_end)
 print(time_end-time_start)
 
-#library(xlsx)
-#write.xlsx(results,"LENA_Texte_Zuwanderung.xlsx",row.names=FALSE)
+
 
