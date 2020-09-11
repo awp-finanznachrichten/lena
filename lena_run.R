@@ -25,7 +25,7 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
-for (a in 1:1500) { #nrow(results)
+for (a in 1:nrow(results)) { 
   
 results$gebietAusgezaehlt[a] = TRUE
 
