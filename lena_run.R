@@ -25,7 +25,7 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
-for (a in 1:1000) { #nrow(results)
+for (a in 1:1500) { #nrow(results)
   
 results$gebietAusgezaehlt[a] = TRUE
 
@@ -206,6 +206,4 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 time_end <- Sys.time()
 print(time_end)
 print(time_end-time_start)
-
-View(results)
 
