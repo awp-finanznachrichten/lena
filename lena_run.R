@@ -25,7 +25,7 @@ cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
-for (a in 1:nrow(results)) {
+for (a in 1:1000) { #nrow(results)
   
 results$gebietAusgezaehlt[a] = TRUE
 
@@ -83,8 +83,8 @@ results$Unentschieden <- NA
 results$Einstimmig_Ja <- NA
 results$Einstimmig_Nein <- NA
 results$Storyboard <- NA
-results$Text_d <- "Die Resultate von dieser Gemeinde sind noch nicht bekannt"
-results$Text_f <- "Les résultats ne sont pas encore connus dans cette commune"
+results$Text_d <- "Die Resultate von dieser Gemeinde sind noch nicht bekannt."
+results$Text_f <- "Les résultats ne sont pas encore connus dans cette commune."
 
 hist_check <- FALSE
 
