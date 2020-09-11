@@ -83,7 +83,7 @@ results$Unentschieden <- NA
 results$Einstimmig_Ja <- NA
 results$Einstimmig_Nein <- NA
 results$Storyboard <- NA
-results$Text_d <- "Noch keine Daten vorhanden"
+results$Text_d <- "Die Resultate von dieser Gemeinde sind noch nicht bekannt"
 results$Text_f <- "Les résultats ne sont pas encore connus dans cette commune"
 
 hist_check <- FALSE
@@ -207,5 +207,5 @@ time_end <- Sys.time()
 print(time_end)
 print(time_end-time_start)
 
-
+View(results)
 
