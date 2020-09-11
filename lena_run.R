@@ -60,18 +60,6 @@ Ja_Stimmen_Kanton <- results_kantone %>%
 results <- merge(results,Ja_Stimmen_Kanton)
 
 
-#Kanton Jura entfernen
-#for (c in 1:nrow(results)) {
-  
-#  if (results$Kantons_Nr[c] == 26) {
-
-#results$Gebiet_Ausgezaehlt[c] <- FALSE
-
-#}
-
-#}
-
-
 #Wie viele Gemeinden sind ausgezählt?
 cat(paste0(sum(results$Gebiet_Ausgezaehlt)," Gemeinden sind ausgezählt.\n"))
 
@@ -97,10 +85,6 @@ if (nrow(results) > 0) {
 
 #Daten anpassen
 results <- augment_raw_data(results)
-
-###Storyfinder 
-#results$Einstimmig_Ja[1] <- TRUE
-#results$Einstimmig_Nein[1] <- TRUE
 
 #Intros generieren
 results <- normal_intro(results)
@@ -206,4 +190,3 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 time_end <- Sys.time()
 print(time_end)
 print(time_end-time_start)
-
