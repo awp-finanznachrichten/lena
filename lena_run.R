@@ -18,23 +18,22 @@ vorlagen <- get_vorlagen(json_data,"de")
 #####Loop für jede Vorlage
 for (i in 1:nrow(vorlagen)) {
 
-#i <- 1 #LÖSCHEN!!!!
 cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
-for (a in 1:nrow(results)) { 
+#for (a in 1:nrow(results)) { 
   
-results$gebietAusgezaehlt[a] = TRUE
+#results$gebietAusgezaehlt[a] = TRUE
 
-results$jaStimmenAbsolut[a] <- sample(0:10000,1)
-results$neinStimmenAbsolut[a] <- sample(0:10000,1)
-results$gueltigeStimmen[a] <- results$jaStimmenAbsolut[a] + results$neinStimmenAbsolut[a]
-results$jaStimmenInProzent[a] <- results$jaStimmenAbsolut[a]*100/results$gueltigeStimmen[a]
+#results$jaStimmenAbsolut[a] <- sample(0:10000,1)
+#results$neinStimmenAbsolut[a] <- sample(0:10000,1)
+#results$gueltigeStimmen[a] <- results$jaStimmenAbsolut[a] + results$neinStimmenAbsolut[a]
+#results$jaStimmenInProzent[a] <- results$jaStimmenAbsolut[a]*100/results$gueltigeStimmen[a]
 
-}
+#}
 
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
@@ -44,12 +43,12 @@ results <- format_data_g(results)
 results_kantone <- get_results(json_data,i,"cantonal")
 
 #Daten simulieren Kantone!!!
-for (b in 1:nrow(results_kantone)) {
+#for (b in 1:nrow(results_kantone)) {
   
-  results_kantone$gebietAusgezaehlt[b] <- TRUE
-  results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
+#  results_kantone$gebietAusgezaehlt[b] <- TRUE
+#results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
   
-}
+#}
 
 Ja_Stimmen_Kanton <- results_kantone %>%
   select(Kantons_Nr,jaStimmenInProzent) %>%
@@ -89,12 +88,17 @@ results <- augment_raw_data(results)
 #Intros generieren
 results <- normal_intro(results)
 
+results$Storyboard[1] <- "Intro_Sonderfall"
+results$Storyboard[3] <- "Intro_Unanimous_Ja"
+results$Storyboard[4] <- "Intro_Unanimous_Nein"
+
 #LENA-Classics (falls alle Gemeinden ausgezählt):
 if (nrow(results_notavailable) == 0) {
 
 results <- lena_classics(results)
 
 }  
+
 
 #Historischer Vergleich (falls vorhanden)
 
@@ -133,6 +137,8 @@ results <- kanton_storyfinder(results)
 }
 
 }
+
+
 
 ###Storybuilder
 
@@ -182,8 +188,9 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
-#library(xlsx)
-#write.xlsx(results,paste0("LENA_Texte_",vorlagen_short[i],".xlsx"),row.names=FALSE)
+library(xlsx)
+write.xlsx(results[c(1,3:4),c(14:15,27:29)],paste0("LENA_Sonderfälle_",vorlagen_short[i],".xlsx"),row.names=FALSE)
+
 
 }
 
