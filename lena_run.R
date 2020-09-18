@@ -25,7 +25,7 @@ results <- get_results(json_data,i)
 
 #Daten simulieren Gemeinde!!!
 #for (a in 1:nrow(results)) { 
-  
+
 #results$gebietAusgezaehlt[a] = TRUE
 
 #results$jaStimmenAbsolut[a] <- sample(0:10000,1)
