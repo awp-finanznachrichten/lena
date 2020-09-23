@@ -1,8 +1,8 @@
+#Zeit stoppen
 time_start <- Sys.time()
-print(time_start)
 
 #Working Directory definieren
-setwd("C:/Users/simon/OneDrive/LENA_Project/lena")
+setwd("C:/Users/sw/OneDrive/LENA_Project/lena")
 
 ###Config: Bibliotheken laden, Pfade/Links definieren, bereits vorhandene Daten laden
 source("config.R",encoding = "UTF-8")
@@ -18,22 +18,10 @@ vorlagen <- get_vorlagen(json_data,"de")
 #####Loop für jede Vorlage
 for (i in 1:nrow(vorlagen)) {
 
-cat(paste0("Ermittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
+cat(paste0("\nErmittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
   
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
-
-#Daten simulieren Gemeinde!!!
-#for (a in 1:nrow(results)) { 
-
-#results$gebietAusgezaehlt[a] = TRUE
-
-#results$jaStimmenAbsolut[a] <- sample(0:10000,1)
-#results$neinStimmenAbsolut[a] <- sample(0:10000,1)
-#results$gueltigeStimmen[a] <- results$jaStimmenAbsolut[a] + results$neinStimmenAbsolut[a]
-#results$jaStimmenInProzent[a] <- results$jaStimmenAbsolut[a]*100/results$gueltigeStimmen[a]
-
-#}
 
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
@@ -41,14 +29,6 @@ results <- format_data_g(results)
 
 #Kantonsdaten hinzufügen
 results_kantone <- get_results(json_data,i,"cantonal")
-
-#Daten simulieren Kantone!!!
-#for (b in 1:nrow(results_kantone)) {
-  
-#results_kantone$gebietAusgezaehlt[b] <- TRUE
-#results_kantone$jaStimmenInProzent[b] <- runif(1,0,100)
-  
-#}
 
 Ja_Stimmen_Kanton <- results_kantone %>%
   select(Kantons_Nr,jaStimmenInProzent) %>%
@@ -184,12 +164,8 @@ write.csv(output_dw,paste0("Output/",vorlagen_short[i],"_dw.csv"), na = "", row.
 
 cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 
-#library(xlsx)
-#write.xlsx(results[c(1,3:4),c(14:15,27:29)],paste0("LENA_Sonderfälle_",vorlagen_short[i],".xlsx"),row.names=FALSE)
-
-
 }
 
+#Wie lange hat LENA gebraucht
 time_end <- Sys.time()
-print(time_end)
 print(time_end-time_start)

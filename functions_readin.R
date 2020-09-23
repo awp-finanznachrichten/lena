@@ -198,4 +198,4 @@ format_data_hist <- function(results) {
 
 
 
-cat("Funktionen geladen")
+cat("Funktionen geladen\n")
