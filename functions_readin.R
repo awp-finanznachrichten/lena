@@ -29,7 +29,6 @@ get_vorlagen <- function(dta_raw, sprache="de") {
   
 }
 
-json_data$schweiz$vorlagen$vorlagenTitel
 
 #Resultate aus JSON-File lesen
 get_results <- function(dta_raw,
