@@ -23,9 +23,6 @@ cat(paste0("\nErmittle Daten für folgende Vorlage: ",vorlagen$text[i],"\n"))
 ###Resultate aus JSON auslesen 
 results <- get_results(json_data,i)
 
-#Adapt Emergency
-results[909:911,3] <- TRUE
-
 #Daten anpassen Gemeinden
 results <- treat_gemeinden(results)
 results <- format_data_g(results)
@@ -172,5 +169,3 @@ cat(paste0("\nGenerated output for Vorlage ",vorlagen_short[i],"\n"))
 #Wie lange hat LENA gebraucht
 time_end <- Sys.time()
 print(time_end-time_start)
-
-results[,]
